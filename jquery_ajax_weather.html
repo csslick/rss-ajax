@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title> Ajax weather</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style>
+	tr:nth-child(odd){ background: #ccc;}
+	th, td{ padding: 10px;}
+</style>
+<script>
+$(function() {
+
+	$.ajax({
+		url:"weather.php",
+		dataType:"xml",
+		success: function(data) {
+			console.log(data);
+			var html = '';
+			var $items = $(data).find("rss");
+			var $pubDate = $(data).find('rss pubDate').text();
+			var $location_data = $(data).find('location').eq(0).find('data');
+			console.log($location_data.length);
+			
+			html += '<table>'
+			html += '<caption>기상예보 ' + $pubDate + '</caption>';
+			html += '<tr>';
+			html += '	 <th>지역</th><th>날짜</th><th>날씨</th><th>최저온도</th><th>최대온도</th>'
+			html += '</tr>';
+
+			for(var i = 0; i < $location_data.length; i++){
+				html += '<tr>';
+				html += '<td>' + $location_data.eq(i).prevAll('city').text() + '</td>';
+				html += '<td>' + $location_data.eq(i).find('tmEf').text() + '</td>';
+				html += '<td>' + $location_data.eq(i).find('wf').text() + '</td>';
+				html += '<td>' + $location_data.eq(i).find('tmn').text() + '</td>';
+				html += '<td>' + $location_data.eq(i).find('tmx').text() + '</td>';
+				html += '</tr>';
+			}
+			$('body').append(html);
+		},
+		error: function(err){
+			console.log("error: ", err);
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<div class="wrap"></div>
+</body>
+</html>
