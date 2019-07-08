@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title> Ajax </title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(function() {
+	$.ajax({
+		url:"air.php",
+		dataType:"json",
+		success: function(data) {
+
+			console.log(data);
+		},
+		error: function(err){
+			console.log("error: ", err);
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<div class="wrap"></div>
+</body>
+</html>
